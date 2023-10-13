@@ -1,0 +1,26 @@
+HOW TO DO NFS CONFIGURATION ON TWO LINUX SERVERS
+
+Step01 :- let suppose we have two linux instances.
+           
+               client-side, server-side having ssh and nfs allowed in security group
+
+SERVER-SIDE
+
+Step02 :- yum -y install nfs-utils
+                mkdir /nfs
+                chmod 777 /nfs
+
+Step03 :- vi /etc/exports
+                       /nfs Client_IP(rw,sync,no_subtree_check)
+                
+Step04 :- systemctl start nfs-server.service
+
+CLIENT-SIDE
+
+Step05 :- yum -y install nfs-utils
+               mkdir /nfs-client
+
+Step06 :- sudo mount -t nfs Server_IP:/nfs /nfs-client
+               df -h                
+
+source :- https://bluexp.netapp.com/blog/azure-anf-blg-linux-nfs-server-how-to-set-up-server-and-client
