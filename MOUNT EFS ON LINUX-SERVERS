@@ -1,0 +1,29 @@
+HOW TO MOUNT EFS ON LINUX-SERVERS
+
+Step01 :- Create two EC2 instances with port 22 opened
+      
+                let the SG name for them is SG-port22-allowed
+
+Step02 :- Create SG for EFS (EFS-SG) in which give reference of the SG of 22port
+allowed 
+ 
+               we’ll attach this SG to EFS allowing only the EC2 instances who have the
+               SG of port 22 allowed (SG-port22-allowed)
+
+Step03 :- Create EFS and attach the EFS-SG to the filesystem
+
+Step04 :- run this command in each instance 
+
+“sudo -i”
+“yum -y install amazon-efs-utils”
+“mkdir efs”
+
+Step05 :- click attach button in efs and get the mount point.
+
+               paste the 1st mount point in each instance.
+               (sudo mount -t efs -o tls fs-08f5dceea205a13f9:/ efs)
+
+               efs file system is mounted on /root/efs on both the instances.
+
+               if you get the error for installing botocore, then search on browser for it 
+               and follow the procedure and again run the mount command again.
