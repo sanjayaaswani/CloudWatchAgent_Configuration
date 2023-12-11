@@ -1,0 +1,33 @@
+---
+- name: this is to deploy NFS
+  hosts: dev/ips
+  vars:
+     nfs_services:
+        - nfs
+        - rpc-bind
+        - mountd 
+  tasks:
+        - name: this is to install nfs
+          yum:
+             name: nfs-utils
+             state: present
+        - name: create /share
+          file:
+             path: /share
+             state: directory
+             mode: ‘0777’
+        - name: configure exports
+          lineinfile:
+             path:  /etc/exports
+             line: ‘/share *(rw, sync, no_root_squash)’
+        - name: start the service
+          service:
+             name: nfs-server
+             state: started
+        - name: manage firewall, add services
+          firewalld:
+             service: “{{ item }}”
+             permanent: yes
+             state: enabled
+             immediate: yes
+          loop: “{{ nfs_services }}”
